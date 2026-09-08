@@ -56,7 +56,7 @@ This repository is the technical and governance home of the ecosystem.
 
 - [**`me.md`**](https://github.com/block/me.md) — draft **personal-sovereignty memory protocol** authored by David Hamilton (Block / goose). A user-owned, plain-file protocol for what agents know about you: files live on the user's machine, agents may only *propose* additions, and the user decides what becomes memory. Complementary discussion draft in the OMP ecosystem. Canonical source: `github.com/block/me.md`.
 
-### Everything Else
+### Other
 
 - [`spec/scoping-note-2026-09.pdf`](spec/scoping-note-2026-09.pdf) — **Memory ecosystem scoping note** surveying current memory implementations and shared primitives an open technology can standardize (August 2026).
 
