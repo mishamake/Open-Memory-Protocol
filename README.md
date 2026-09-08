@@ -46,23 +46,23 @@ This repository is the technical and governance home of the ecosystem.
 
 ### Specs
 
-- [`spec/draft-v0.2-packer.pdf`](spec/draft-v0.2-packer.pdf) — **v0.2 Agent Memory Specification**, updated draft by Charles Packer (Letta) — expanded schema, provenance, and lifecycle definitions.
+- **v0.2 Agent Memory Specification** — updated draft by Charles Packer (Letta). Expanded schema, provenance, and lifecycle definitions. [`spec/draft-v0.2-packer.pdf`](spec/draft-v0.2-packer.pdf)
 
-- [`spec/draft-v0.1-ibm.pdf`](spec/draft-v0.1-ibm.pdf) — **v0.1 IBM draft** — IBM's initial draft OMP specification.
+- **v0.1 IBM draft** — IBM's initial draft OMP specification. [`spec/draft-v0.1-ibm.pdf`](spec/draft-v0.1-ibm.pdf)
 
-- [`spec/draft-v0.1-aidp.pdf`](spec/draft-v0.1-aidp.pdf) — **v0.1 AI Disclosures Project draft** — draft OMP specification from the AI Disclosures Project, authored by Sruly Rosenblat.
+- **v0.1 AI Disclosures Project draft** — draft OMP specification from the AI Disclosures Project, authored by Sruly Rosenblat. [`spec/draft-v0.1-aidp.pdf`](spec/draft-v0.1-aidp.pdf)
 
-- [`spec/ams-card.md`](spec/ams-card.md) — **Agent Memory System Card (AMS Card)**, a structured documentation format for agent memory systems, by [Mila](https://mila.quebec/) and [Mozilla](https://mozilla.org). Model cards made language models legible; dataset cards did the same for training data — memory systems had no equivalent until now. Template, reference card, and evaluation framework: [`mila-iqia/agent-memory-system-card`](https://github.com/mila-iqia/agent-memory-system-card/) (goes live Sep 9). Draft, open for comment.
+- **Agent Memory System Card (AMS Card)** — a structured documentation format for agent memory systems, by [Mila](https://mila.quebec/) and [Mozilla](https://mozilla.org). Model cards made language models legible; dataset cards did the same for training data — memory systems had no equivalent until now. Template, reference card, and evaluation framework: [`mila-iqia/agent-memory-system-card`](https://github.com/mila-iqia/agent-memory-system-card/) (goes live Sep 9). Draft, open for comment. [`spec/ams-card.md`](spec/ams-card.md)
 
-- [**`me.md`**](https://github.com/block/me.md) — draft **personal-sovereignty memory protocol** authored by David Hamilton (Block / goose). A user-owned, plain-file protocol for what agents know about you: files live on the user's machine, agents may only *propose* additions, and the user decides what becomes memory. Complementary discussion draft in the OMP ecosystem. Canonical source: `github.com/block/me.md`.
+- **`me.md`** — draft personal-sovereignty memory protocol authored by David Hamilton (Block / goose). A user-owned, plain-file protocol for what agents know about you: files live on the user's machine, agents may only *propose* additions, and the user decides what becomes memory. Complementary discussion draft in the OMP ecosystem. Canonical source: [`github.com/block/me.md`](https://github.com/block/me.md)
 
 ### Other
 
-- [`spec/scoping-note-2026-09.pdf`](spec/scoping-note-2026-09.pdf) — **Memory ecosystem scoping note** surveying current memory implementations and shared primitives an open technology can standardize (August 2026).
+- **Memory ecosystem scoping note** — surveys current memory implementations and shared primitives an open technology can standardize (August 2026). [`spec/scoping-note-2026-09.pdf`](spec/scoping-note-2026-09.pdf)
 
-- [`prototypes/python-loader-validator/`](prototypes/python-loader-validator/) — A draft **Python implementation** of the loader, validator, and harness contract for the draft open memory protocol technology.
+- **Python implementation** — draft loader, validator, and harness contract for the draft open memory protocol technology. [`prototypes/python-loader-validator/`](prototypes/python-loader-validator/)
 
-- [`prototypes/acp_memory_server/`](prototypes/acp_memory_server/) — An old experimental **ACP-based MCP memory-server prototype** indexing sessions across twelve coding-agent harnesses (Claude Code, Codex, Goose, Cursor, Cline, Roo, Kilo, Zed, Gemini CLI, Qwen Code, Continue, Aider). Originated in [`SrulyRosenblat/agent_memory_mcp`](https://github.com/SrulyRosenblat/agent_memory_mcp) with first commits in *May 2026*; imported here at upstream commit `02b8d92`.
+- **ACP-based MCP memory-server prototype** — an old experimental prototype indexing sessions across twelve coding-agent harnesses (Claude Code, Codex, Goose, Cursor, Cline, Roo, Kilo, Zed, Gemini CLI, Qwen Code, Continue, Aider). Originated in [`SrulyRosenblat/agent_memory_mcp`](https://github.com/SrulyRosenblat/agent_memory_mcp) with first commits in *May 2026*; imported here at upstream commit `02b8d92`. [`prototypes/acp_memory_server/`](prototypes/acp_memory_server/)
 
 ## Why an Open Protocol
 
