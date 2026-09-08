@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://ai-disclosures.org/ompi"><strong>Site</strong></a> ·
-  <a href="spec/draft-v0.1.md"><strong>Draft technology</strong></a> ·
+  <a href="spec/"><strong>Draft technology</strong></a> ·
   <a href="prototypes/python-loader-validator/"><strong>Python code</strong></a> ·
   <a href="prototypes/"><strong>Prototypes</strong></a> ·
   <a href="GOVERNANCE.md"><strong>Governance</strong></a> ·
@@ -44,13 +44,19 @@ This repository is the technical and governance home of the ecosystem.
 
 ## Key Artifacts
 
-- [`spec/draft-v0.1.md`](spec/draft-v0.1.md) — A draft **Open Memory Protocol technology spec (v0.1)**, authored by Charles Packer (CEO, Letta).
+### Specs
 
 - [`spec/draft-v0.2-packer.pdf`](spec/draft-v0.2-packer.pdf) — **v0.2 Agent Memory Specification**, updated draft by Charles Packer (Letta) — expanded schema, provenance, and lifecycle definitions.
+
+- [`spec/draft-v0.1-ibm.pdf`](spec/draft-v0.1-ibm.pdf) — **v0.1 IBM draft** — IBM's initial draft OMP specification.
+
+- [`spec/draft-v0.1-aidp.pdf`](spec/draft-v0.1-aidp.pdf) — **v0.1 AI Disclosures Project draft** — draft OMP specification from the AI Disclosures Project, authored by Sruly Rosenblat.
 
 - [`spec/ams-card.md`](spec/ams-card.md) — **Agent Memory System Card (AMS Card)**, a structured documentation format for agent memory systems, by [Mila](https://mila.quebec/) and [Mozilla](https://mozilla.org). Model cards made language models legible; dataset cards did the same for training data — memory systems had no equivalent until now. Template, reference card, and evaluation framework: [`mila-iqia/agent-memory-system-card`](https://github.com/mila-iqia/agent-memory-system-card/) (goes live Sep 9). Draft, open for comment.
 
 - [**`me.md`**](https://github.com/block/me.md) — draft **personal-sovereignty memory protocol** authored by David Hamilton (Block / goose). A user-owned, plain-file protocol for what agents know about you: files live on the user's machine, agents may only *propose* additions, and the user decides what becomes memory. Complementary discussion draft in the OMP ecosystem. Canonical source: `github.com/block/me.md`.
+
+### Everything Else
 
 - [`spec/scoping-note-2026-09.pdf`](spec/scoping-note-2026-09.pdf) — **Memory ecosystem scoping note** surveying current memory implementations and shared primitives an open technology can standardize (August 2026).
 
@@ -81,7 +87,9 @@ The ecosystem's brief [scoping note](spec/scoping-note-2026-09.pdf) surveys memo
 ```
 Open-Memory-Protocol/
 ├── spec/                       — specifications & scoping notes
-│   ├── draft-v0.1.md               (Packer draft technology spec)
+│   ├── draft-v0.2-packer.pdf       (Packer draft technology spec, v0.2)
+│   ├── draft-v0.1-ibm.pdf          (IBM draft technology spec, v0.1)
+│   ├── draft-v0.1-aidp.pdf         (AI Disclosures Project draft, v0.1)
 │   ├── ams-card.md                 (Agent Memory System Card — Mila & Mozilla)
 │   └── scoping-note-2026-09.pdf    (Strauss & Rosenblat scoping note, Sept 2026)
 ├── prototypes/                 — experimental code
@@ -127,7 +135,7 @@ OMPI consolidates work developing across the AI Disclosures Project since August
 - **April–May 2026** — Rockefeller Foundation Bellagio convening on *Human + AI Markets*. Twenty leaders across AI labs, memory-infrastructure providers, and civil-society organizations discuss agent-memory portability.
 - **May 2026** — First public commits on the ACP-based memory-server prototype ([`SrulyRosenblat/agent_memory_mcp`](https://github.com/SrulyRosenblat/agent_memory_mcp)), covering session indexing across twelve coding-agent harnesses. Now imported here as [`prototypes/acp_memory_server/`](prototypes/acp_memory_server/).
 - **June 2026** — FOO Camp session (O'Reilly Media, Lighthaven Berkeley) advances the coding-agent memory-portability work with builders across the stack.
-- **August 2026** — Charles Packer (Letta) circulates the draft OMP technology, reviewed by the AI Disclosures Project team; now [`spec/draft-v0.1.md`](spec/draft-v0.1.md). OMPI consolidates its work in this repository as the canonical technical and governance home.
+- **August 2026** — Charles Packer (Letta) circulates the draft OMP technology, reviewed by the AI Disclosures Project team; current version at [`spec/draft-v0.2-packer.pdf`](spec/draft-v0.2-packer.pdf). OMPI consolidates its work in this repository as the canonical technical and governance home.
 - **September 9, 2026** — First ecosystem convening, co-hosted with Mozilla and IBM.
 - **October 2026** — In-person ecosystem gathering at the O'Reilly open-source unconference (Berkeley).
 
@@ -139,7 +147,7 @@ Thirteen external participants from ten affiliations are confirmed for the Septe
 
 ## How to contribute
 
-- Read the [draft technology](spec/draft-v0.1.md) and open an issue with feedback.
+- Read the [draft technology](spec/) and open an issue with feedback.
 - Run the [experimental Python implementation](prototypes/python-loader-validator/) against your own memory workload.
 - Explore the [ACP-based memory-server prototype](prototypes/acp_memory_server/).
 - Contact [ompi@aidisclosures.org](mailto:ompi@aidisclosures.org) to join the ecosystem.
