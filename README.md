@@ -46,11 +46,11 @@ This repository is the technical and governance home of the ecosystem.
 
 ### Specs
 
-- **v0.2 Agent Memory Specification** — updated draft by Charles Packer (Letta). Expanded schema, provenance, and lifecycle definitions. [`spec/draft-v0.2-packer.pdf`](spec/draft-v0.2-packer.pdf)
+- **Letta Draft Spec v0.2** — updated draft by Charles Packer (Letta). Expanded schema, provenance, and lifecycle definitions. [`spec/draft-v0.2-packer.pdf`](spec/draft-v0.2-packer.pdf)
 
-- **v0.1 IBM Draft** — IBM's initial draft OMP specification. [`spec/draft-v0.1-ibm.pdf`](spec/draft-v0.1-ibm.pdf)
+- **IBM Draft Spec v0.1** — IBM's initial draft OMP specification. [`spec/draft-v0.1-ibm.pdf`](spec/draft-v0.1-ibm.pdf)
 
-- **v0.1 AI Disclosures Project Draft** — draft OMP specification from the AI Disclosures Project, authored by Sruly Rosenblat. [`spec/draft-v0.1-aidp.pdf`](spec/draft-v0.1-aidp.pdf)
+- **AI Disclosures Project Draft Spec v0.1** — draft OMP specification from the AI Disclosures Project, authored by Sruly Rosenblat. [`spec/draft-v0.1-aidp.pdf`](spec/draft-v0.1-aidp.pdf)
 
 - **Agent Memory System Card (AMS Card)** — a structured documentation format for agent memory systems, by [Mila](https://mila.quebec/) and [Mozilla](https://mozilla.org). Model cards made language models legible; dataset cards did the same for training data — memory systems had no equivalent until now. Template, reference card, and evaluation framework: [`mila-iqia/agent-memory-system-card`](https://github.com/mila-iqia/agent-memory-system-card/) (goes live Sep 9). Draft, open for comment. [`spec/ams-card.md`](spec/ams-card.md)
 
