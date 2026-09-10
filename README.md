@@ -52,6 +52,8 @@ This repository is the technical and governance home of the ecosystem.
 
 - **AI Disclosures Project Draft Spec v0.1** — Draft OMP specification from the AI Disclosures Project, authored by Sruly Rosenblat. [`spec/draft-v0.1-aidp.pdf`](spec/draft-v0.1-aidp.pdf)
 
+- **Cognee / COGX Proposal v0.1** — A semantic core for portable agent memory: identity, evidence, authority, lineage, lifecycle, and exchange fidelity. Uses COGX as an implemented reference input, distinguishes current capabilities from proposed guarantees, and positions Markdown as a profile and runtime APIs and federation as bindings. [PDF](spec/draft-v0.1-cognee.pdf) · [Markdown source](spec/draft-v0.1-cognee.md)
+
 - **Agent Memory System Card (AMS Card)** — A structured documentation format for agent memory systems, by [Mila](https://mila.quebec/) and [Mozilla](https://mozilla.org). Model cards made language models legible; dataset cards did the same for training data — memory systems had no equivalent until now. Template, reference card, and evaluation framework: [`mila-iqia/agent-memory-system-card`](https://github.com/mila-iqia/agent-memory-system-card/) (goes live Sep 9). Draft, open for comment. [`spec/ams-card.md`](spec/ams-card.md)
 
 - **`me.md`** — Draft personal-sovereignty memory protocol authored by David Hamilton (Block / goose). A user-owned, plain-file protocol for what agents know about you: files live on the user's machine, agents may only *propose* additions, and the user decides what becomes memory. Complementary discussion draft in the OMP ecosystem. Canonical source: [`github.com/block/me.md`](https://github.com/block/me.md)
@@ -90,6 +92,8 @@ Open-Memory-Protocol/
 │   ├── draft-v0.2-packer.pdf       (Packer draft technology spec, v0.2)
 │   ├── draft-v0.1-ibm.pdf          (IBM draft technology spec, v0.1)
 │   ├── draft-v0.1-aidp.pdf         (AI Disclosures Project draft, v0.1)
+│   ├── draft-v0.1-cognee.pdf       (Cognee / COGX exchange proposal, v0.1)
+│   ├── draft-v0.1-cognee.md        (editable source of the Cognee proposal)
 │   ├── ams-card.md                 (Agent Memory System Card — Mila & Mozilla)
 │   └── scoping-note-2026-09.pdf    (Strauss & Rosenblat scoping note, Sept 2026)
 ├── prototypes/                 — experimental code
