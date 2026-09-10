@@ -1,6 +1,6 @@
 # OMP — Python experiment
 
-An experimental Python sketch exploring the [Open Memory Protocol (OMP)](../README.md), targeting the harness contract and validation rules in [`spec/draft-v0.1.md`](../spec/draft-v0.1.md).
+An experimental Python sketch exploring the [Open Memory Protocol (OMP)](../README.md), targeting the harness contract and validation rules in [`early-draft-specs/draft-v0.2-packer.pdf`](../early-draft-specs/draft-v0.2-packer.pdf).
 
 ## Install
 
