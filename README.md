@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://ai-disclosures.org/ompi"><strong>Site</strong></a> ·
-  <a href="spec/"><strong>Draft technology</strong></a> ·
+  <a href="early-draft-specs/"><strong>Draft technology</strong></a> ·
   <a href="prototypes/python-loader-validator/"><strong>Python code</strong></a> ·
   <a href="prototypes/"><strong>Prototypes</strong></a> ·
   <a href="GOVERNANCE.md"><strong>Governance</strong></a> ·
@@ -46,21 +46,21 @@ This repository is the technical and governance home of the ecosystem.
 
 ### Specs
 
-- **Letta Draft Spec v0.2** — Updated draft by Charles Packer (Letta). Expanded schema, provenance, and lifecycle definitions. [`spec/draft-v0.2-packer.pdf`](spec/draft-v0.2-packer.pdf)
+- **Letta Draft Spec v0.2** — Updated draft by Charles Packer (Letta). Expanded schema, provenance, and lifecycle definitions. [`early-draft-specs/draft-v0.2-packer.pdf`](early-draft-specs/draft-v0.2-packer.pdf)
 
-- **IBM Draft Spec v0.1** — IBM's initial draft OMP specification. [`spec/draft-v0.1-ibm.pdf`](spec/draft-v0.1-ibm.pdf)
+- **IBM Draft Spec v0.1** — IBM's initial draft OMP specification. [`early-draft-specs/draft-v0.1-ibm.pdf`](early-draft-specs/draft-v0.1-ibm.pdf)
 
-- **AI Disclosures Project Draft Spec v0.1** — Draft OMP specification from the AI Disclosures Project, authored by Sruly Rosenblat. [`spec/draft-v0.1-aidp.pdf`](spec/draft-v0.1-aidp.pdf)
+- **AI Disclosures Project Draft Spec v0.1** — Draft OMP specification from the AI Disclosures Project, authored by Sruly Rosenblat. [`early-draft-specs/draft-v0.1-aidp.pdf`](early-draft-specs/draft-v0.1-aidp.pdf)
 
-- **Cognee / COGX Proposal v0.1** — A semantic core for portable agent memory: identity, evidence, authority, lineage, lifecycle, and exchange fidelity. Uses COGX as an implemented reference input, distinguishes current capabilities from proposed guarantees, and positions Markdown as a profile and runtime APIs and federation as bindings. [PDF](spec/draft-v0.1-cognee.pdf) · [Markdown source](spec/draft-v0.1-cognee.md)
+- **Cognee / COGX Proposal v0.1** — A semantic core for portable agent memory: identity, evidence, authority, lineage, lifecycle, and exchange fidelity. Uses COGX as an implemented reference input, distinguishes current capabilities from proposed guarantees, and positions Markdown as a profile and runtime APIs and federation as bindings. [PDF](early-draft-specs/draft-v0.1-cognee.pdf) · [Markdown source](early-draft-specs/draft-v0.1-cognee.md)
 
-- **Agent Memory System Card (AMS Card)** — A structured documentation format for agent memory systems, by [Mila](https://mila.quebec/) and [Mozilla](https://mozilla.org). Model cards made language models legible; dataset cards did the same for training data — memory systems had no equivalent until now. Template, reference card, and evaluation framework: [`mila-iqia/agent-memory-system-card`](https://github.com/mila-iqia/agent-memory-system-card/) (goes live Sep 9). Draft, open for comment. [`spec/ams-card.md`](spec/ams-card.md)
+- **Agent Memory System Card (AMS Card)** — A structured documentation format for agent memory systems, by [Mila](https://mila.quebec/) and [Mozilla](https://mozilla.org). Model cards made language models legible; dataset cards did the same for training data — memory systems had no equivalent until now. Template, reference card, and evaluation framework: [`mila-iqia/agent-memory-system-card`](https://github.com/mila-iqia/agent-memory-system-card/) (goes live Sep 9). Draft, open for comment. [`early-draft-specs/ams-card.md`](early-draft-specs/ams-card.md)
 
 - **`me.md`** — Draft personal-sovereignty memory protocol authored by David Hamilton (Block / goose). A user-owned, plain-file protocol for what agents know about you: files live on the user's machine, agents may only *propose* additions, and the user decides what becomes memory. Complementary discussion draft in the OMP ecosystem. Canonical source: [`github.com/block/me.md`](https://github.com/block/me.md)
 
 ### Other
 
-- **Memory Ecosystem Scoping Note** — Surveys current memory implementations and shared primitives an open technology can standardize (August 2026). [`spec/scoping-note-2026-09.pdf`](spec/scoping-note-2026-09.pdf)
+- **Memory Ecosystem Scoping Note** — Surveys current memory implementations and shared primitives an open technology can standardize (August 2026). [`early-draft-specs/scoping-note-2026-09.pdf`](early-draft-specs/scoping-note-2026-09.pdf)
 
 - **Python Implementation** — Draft loader, validator, and harness contract for the draft open memory protocol technology. [`prototypes/python-loader-validator/`](prototypes/python-loader-validator/)
 
@@ -76,7 +76,7 @@ The fragmentation has real engineering and security costs. Developers write besp
 
 ## Shared practices in the ecosystem
 
-The ecosystem's brief [scoping note](spec/scoping-note-2026-09.pdf) surveys memory implementations across coding harnesses, consumer assistants, and enterprise agent systems and identifies shared practices that a minimal open technology can standardize. These are the concrete issues the working group will iterate on:
+The ecosystem's brief [scoping note](early-draft-specs/scoping-note-2026-09.pdf) surveys memory implementations across coding harnesses, consumer assistants, and enterprise agent systems and identifies shared practices that a minimal open technology can standardize. These are the concrete issues the working group will iterate on:
 
 1. **Persistent memory across sessions.** Memory that survives across chat sessions rather than disappearing at conversation end. Present in Claude Code, OpenHands, Hermes, VS Code / Copilot, Deep Agents, ChatGPT, Gemini, AWS AgentCore, Vertex Memory Bank, and Microsoft Foundry.
 2. **Scope and ownership.** Every memory tied to an owner or context — user, project, agent, team, or organization. Labels vary across systems, but each can answer "whose memory is this?"
@@ -88,7 +88,7 @@ The ecosystem's brief [scoping note](spec/scoping-note-2026-09.pdf) surveys memo
 
 ```
 Open-Memory-Protocol/
-├── spec/                       — specifications & scoping notes
+├── early-draft-specs/           — specifications & scoping notes
 │   ├── draft-v0.2-packer.pdf       (Packer draft technology spec, v0.2)
 │   ├── draft-v0.1-ibm.pdf          (IBM draft technology spec, v0.1)
 │   ├── draft-v0.1-aidp.pdf         (AI Disclosures Project draft, v0.1)
@@ -106,7 +106,7 @@ Open-Memory-Protocol/
 └── README.md
 ```
 
-Three top-level content folders (`spec/`, `prototypes/`, `research/`) plus supporting files at the repo root.
+Three top-level content folders (`early-draft-specs/`, `prototypes/`, `research/`) plus supporting files at the repo root.
 
 ## First vertical: coding agents
 
@@ -139,7 +139,7 @@ OMPI consolidates work developing across the AI Disclosures Project since August
 - **April–May 2026** — Rockefeller Foundation Bellagio convening on *Human + AI Markets*. Twenty leaders across AI labs, memory-infrastructure providers, and civil-society organizations discuss agent-memory portability.
 - **May 2026** — First public commits on the ACP-based memory-server prototype ([`SrulyRosenblat/agent_memory_mcp`](https://github.com/SrulyRosenblat/agent_memory_mcp)), covering session indexing across twelve coding-agent harnesses. Now imported here as [`prototypes/acp_memory_server/`](prototypes/acp_memory_server/).
 - **June 2026** — FOO Camp session (O'Reilly Media, Lighthaven Berkeley) advances the coding-agent memory-portability work with builders across the stack.
-- **August 2026** — Charles Packer (Letta) circulates the draft OMP technology, reviewed by the AI Disclosures Project team; current version at [`spec/draft-v0.2-packer.pdf`](spec/draft-v0.2-packer.pdf). OMPI consolidates its work in this repository as the canonical technical and governance home.
+- **August 2026** — Charles Packer (Letta) circulates the draft OMP technology, reviewed by the AI Disclosures Project team; current version at [`early-draft-specs/draft-v0.2-packer.pdf`](early-draft-specs/draft-v0.2-packer.pdf). OMPI consolidates its work in this repository as the canonical technical and governance home.
 - **September 9, 2026** — First ecosystem convening, co-hosted with Mozilla and IBM.
 - **October 2026** — In-person ecosystem gathering at the O'Reilly open-source unconference (Berkeley).
 
@@ -151,7 +151,7 @@ Thirteen external participants from ten affiliations are confirmed for the Septe
 
 ## How to contribute
 
-- Read the [draft technology](spec/) and open an issue with feedback.
+- Read the [draft technology](early-draft-specs/) and open an issue with feedback.
 - Run the [experimental Python implementation](prototypes/python-loader-validator/) against your own memory workload.
 - Explore the [ACP-based memory-server prototype](prototypes/acp_memory_server/).
 - Contact [ompi@aidisclosures.org](mailto:ompi@aidisclosures.org) to join the ecosystem.
