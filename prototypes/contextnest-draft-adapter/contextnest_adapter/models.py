@@ -16,9 +16,9 @@ def load_env() -> None:
 
     here = Path(__file__).resolve()
     load_dotenv(Path.cwd() / ".env")
-    load_dotenv(here.parents[1] / ".env")
-    load_dotenv(here.parents[2] / ".env")
-    load_dotenv(here.parents[3] / ".env")
+    # parents[1..3]; fewer exist when installed shallowly (e.g. /app in the Docker image)
+    for parent in here.parents[1:4]:
+        load_dotenv(parent / ".env")
 
 
 def resolve_model(spec: Any, **kwargs: Any) -> Any:

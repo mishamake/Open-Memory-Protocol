@@ -69,6 +69,7 @@ class ContextNestMiddleware(AgentMiddleware):
         self.propose_folder = propose_folder.rstrip("/")
         self.reads: list[dict[str, Any]] = []
         self.proposed: list[str] = []
+        self._announced: set[str] = set()
         self._checkpoint = client.latest_checkpoint()
         self.tools = [self._query_tool(), self._search_tool()]
         if writable:
@@ -155,6 +156,17 @@ class ContextNestMiddleware(AgentMiddleware):
         )
         if self.writable:
             text += " Propose new memories with `nest_propose`; they wait for human review."
+        published = self._newly_published()
+        if published:
+            text += (
+                "\n\nMemories you proposed earlier in this conversation have since been "
+                "published. They are now in memory, loaded in full; earlier replies saying "
+                "they were pending are out of date.\n\n"
+                + "\n\n".join(
+                    f"### {d.title}\n<{d.uri}> (loaded in full)\n\n{d.body.strip()}"
+                    for d in published
+                )
+            )
         if self.load:
             res = self.client.query(self.load, hops=self.hops)
             self._record(res, "preload")
@@ -163,6 +175,28 @@ class ContextNestMiddleware(AgentMiddleware):
                 "full. They are the content, not an index.\n\n" + _render(res, full=True)
             )
         return text
+
+    def _newly_published(self) -> list:
+        """Proposals from this session that a person has published since the last call.
+
+        Without this, a model that saw "pending_review" earlier in the conversation tends to
+        answer from that history instead of asking the nest again (seen live on Nemotron).
+        """
+        out = []
+        for node_id in self.proposed:
+            if node_id in self._announced:
+                continue
+            try:
+                doc = self.client.read(node_id)
+            except CtxError:
+                continue
+            if doc is not None:
+                self._announced.add(node_id)
+                self._record(
+                    QueryResult(selector=node_id, documents=[doc], hops=0), "published-notice"
+                )
+                out.append(doc)
+        return out
 
     def _inject(self, request: ModelRequest) -> ModelRequest:
         blocks = list(request.system_message.content_blocks) if request.system_message else []

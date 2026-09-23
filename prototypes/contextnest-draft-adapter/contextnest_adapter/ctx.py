@@ -92,6 +92,7 @@ class CtxClient:
             capture_output=True,
             text=True,
             timeout=self.timeout,
+            check=False,
         )
         if proc.returncode != 0:
             msg = (proc.stderr or proc.stdout).strip()
@@ -142,8 +143,6 @@ class CtxClient:
     # ------------------------------------------------------------------ writes
     def propose(self, node_id: str, *, title: str, body: str, tags: list[str]) -> str:
         """Write a new memory as a draft awaiting review. It is not served until published."""
-        self.run(
-            "add", node_id, "--title", title, "--body", body, "--tags", ",".join(tags)
-        )
+        self.run("add", node_id, "--title", title, "--body", body, "--tags", ",".join(tags))
         self.run("update", node_id, "--status", "pending_review")
         return node_id

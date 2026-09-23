@@ -2,7 +2,7 @@
 FROM python:3.12-slim
 RUN apt-get update && apt-get install -y --no-install-recommends nodejs npm \
     && rm -rf /var/lib/apt/lists/* \
-    && npm install -g @promptowl/contextnest-cli@2.6.0 \
+    && npm install -g @promptowl/contextnest-cli@2.7.0 \
     && pip install --no-cache-dir uv
 WORKDIR /app
 COPY pyproject.toml README.md ./

@@ -134,7 +134,11 @@ def test_propose_tool_only_when_writable(nest):
             tool_calls=[
                 ToolCall(
                     name="nest_propose",
-                    args={"title": "Prefers email", "body": "Sruly prefers email.", "tags": ["person"]},
+                    args={
+                        "title": "Prefers email",
+                        "body": "Sruly prefers email.",
+                        "tags": ["person"],
+                    },
                     id="1",
                 )
             ],
@@ -145,3 +149,43 @@ def test_propose_tool_only_when_writable(nest):
     agent.invoke({"messages": [HumanMessage(content="remember I prefer email")]})
     assert mw.proposed == ["nodes/memory/prefers-email"]
     assert "nodes/memory/prefers-email" not in CtxClient(nest).query("#person").ids
+
+
+def test_published_proposal_is_announced_once(nest):
+    mw = ContextNestMiddleware(CtxClient(nest), writable=True)
+    model = _model(
+        AIMessage(
+            content="",
+            tool_calls=[
+                ToolCall(
+                    name="nest_propose",
+                    args={
+                        "title": "Prefers phone",
+                        "body": "Sruly prefers phone calls.",
+                        "tags": ["person"],
+                    },
+                    id="1",
+                )
+            ],
+        ),
+        AIMessage(content="proposed"),
+        AIMessage(content="still pending"),
+        AIMessage(content="phone"),
+        AIMessage(content="phone"),
+    )
+    agent = create_agent(model=model, tools=[], middleware=[mw])
+    msgs = agent.invoke({"messages": [HumanMessage(content="remember I prefer phone calls")]})[
+        "messages"
+    ]
+    msgs = agent.invoke({"messages": [*msgs, HumanMessage(content="which channel?")]})["messages"]
+    assert "have since been published" not in _system_text(FakeModel.calls[-1])
+
+    CtxClient(nest).run("update", "nodes/memory/prefers-phone", "--status", "published")
+    msgs = agent.invoke({"messages": [*msgs, HumanMessage(content="which channel?")]})["messages"]
+    text = _system_text(FakeModel.calls[-1])
+    assert "have since been published" in text
+    assert "<contextnest://nodes/memory/prefers-phone> (loaded in full)" in text
+    assert mw.reads[-1]["via"] == "published-notice"
+
+    agent.invoke({"messages": [*msgs, HumanMessage(content="and again?")]})
+    assert "have since been published" not in _system_text(FakeModel.calls[-1])
