@@ -16,6 +16,7 @@ import os
 import shutil
 import subprocess
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -142,7 +143,35 @@ class CtxClient:
 
     # ------------------------------------------------------------------ writes
     def propose(self, node_id: str, *, title: str, body: str, tags: list[str]) -> str:
-        """Write a new memory as a draft awaiting review. It is not served until published."""
-        self.run("add", node_id, "--title", title, "--body", body, "--tags", ",".join(tags))
-        self.run("update", node_id, "--status", "pending_review")
+        """Write a new memory as a draft awaiting review. It is not served until published.
+
+        `ctx add` publishes version 1 as it creates a node, so a proposal made with it would
+        be served, and sealed into a checkpoint, until the status change that follows. For a
+        local nest the proposal is therefore written as a `pending_review` file and indexed;
+        `ctx publish` (or `ctx update --status published`) cuts version 1 when a person
+        approves it. A hosted nest has no local file to write, so it keeps add + update.
+        """
+        if self.cwd is None:
+            self.run("add", node_id, "--title", title, "--body", body, "--tags", ",".join(tags))
+            self.run("update", node_id, "--status", "pending_review")
+            return node_id
+        path = self.cwd / f"{node_id}.md"
+        if path.exists():
+            raise CtxError(f"Document already exists: {node_id}")
+        tag_list = [t if t.startswith("#") else f"#{t}" for t in tags]
+        created = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+        created = created.replace("+00:00", "Z")
+        # JSON strings and arrays are valid YAML flow scalars
+        fm = "\n".join(
+            [
+                f"title: {json.dumps(title)}",
+                "type: document",
+                *([f"tags: {json.dumps(tag_list)}"] if tag_list else []),
+                "status: pending_review",
+                f"created_at: {json.dumps(created)}",
+            ]
+        )
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(f"---\n{fm}\n---\n\n{body.strip()}\n", encoding="utf-8")
+        self.run("index")
         return node_id

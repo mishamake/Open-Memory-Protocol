@@ -83,6 +83,8 @@ def test_proposed_memory_is_not_served_until_published(nest):
         tags=["#person"],
     )
     assert "nodes/memory/moved" not in c.query("#person").ids
+    # never published, so never sealed into a version or a checkpoint
+    assert "No version history" in c.run("history", "nodes/memory/moved")
     c.run("update", "nodes/memory/moved", "--status", "published")
     assert "nodes/memory/moved" in c.query("#person").ids
 
