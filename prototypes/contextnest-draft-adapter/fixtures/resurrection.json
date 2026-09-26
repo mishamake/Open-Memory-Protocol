@@ -1,0 +1,35 @@
+{
+  "fixture": "resurrection",
+  "title": "An old archive tries to bring back a forgotten revision",
+  "about": "A memory is corrected, used in a summary, exported, and then forgotten at the user's request. The old export is imported again. The forgotten revisions must not become current, a read must say the memory was forgotten (not that it never existed), the summary built from it must be flagged for review, and integrity verification must still pass. This is the lifecycle case the Cognee draft §6 asks for.",
+  "drafts": {
+    "cognee": "§3.5 a permitted tombstone prevents an old export from making deleted material current again; §6 an old archive attempting to reintroduce a tombstoned revision",
+    "ibm": "Delete exists; tombstones are not in the draft",
+    "contextnest": "§6.3 forget (proposed): tombstones keep the hash chain, status forgotten, lineage flagged review_required, importers MUST honor tombstones"
+  },
+  "requires": ["supersede", "consolidate", "archive", "forget"],
+  "events": [
+    {"seq": 1, "op": "assert", "object": "health-note", "revision": "n1",
+     "body": "Sruly mentioned a medical appointment on Thursday.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["transcript:t5#8"]},
+    {"seq": 2, "op": "supersede", "object": "health-note", "revision": "n2", "replaces": "n1",
+     "body": "Sruly moved the medical appointment to Friday.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["transcript:t6#1"]},
+    {"seq": 3, "op": "consolidate", "object": "week-summary", "revision": "w1",
+     "inputs": ["n2"],
+     "body": "Sruly is out Friday afternoon.",
+     "actor": "reviewer@example.org", "agent": "summarizer", "model": "any-model",
+     "role": "machine_derived"},
+    {"seq": 4, "op": "archive", "label": "before-forget"},
+    {"seq": 5, "op": "forget", "object": "health-note", "reason_code": "user_request",
+     "actor": "sruly@example.org"},
+    {"seq": 6, "op": "reimport", "label": "before-forget"}
+  ],
+  "expect": {
+    "current": {"health-note": null, "week-summary": "w1"},
+    "forgotten": ["health-note"],
+    "review_required": ["week-summary"],
+    "verify_passes": true,
+    "reimport": {"before-forget": {"not_current": ["n1", "n2"], "still_forgotten": ["health-note"]}}
+  }
+}

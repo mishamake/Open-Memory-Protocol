@@ -1,0 +1,27 @@
+{
+  "fixture": "correction",
+  "title": "A later statement supersedes an earlier one",
+  "about": "The example from the Cognee draft §3.5: one transcript supports Tuesday status updates, a later one changes the preference to Friday. The second revision supersedes the first. Current reads return Friday; a historical read can still explain Tuesday.",
+  "drafts": {
+    "cognee": "§3.1 a correction produces a new revision linked to its predecessor; §3.5 current vs historical reads",
+    "ibm": "memories are immutable; logical mutation is override plus invalidation (time travel instead of data loss)",
+    "contextnest": "§6.1 editing bumps version, the previous version stays reconstructible; §5.1 pinned reads"
+  },
+  "requires": ["supersede", "as_of"],
+  "events": [
+    {"seq": 1, "op": "assert", "object": "status-day", "revision": "r1",
+     "body": "Sruly wants weekly status updates on Tuesday.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["transcript:t1#4"]},
+    {"seq": 2, "op": "supersede", "object": "status-day", "revision": "r2", "replaces": "r1",
+     "body": "Sruly wants weekly status updates on Friday.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["transcript:t2#2"]}
+  ],
+  "expect": {
+    "current": {"status-day": "r2"},
+    "history": {"status-day": ["r1", "r2"]},
+    "as_of": [
+      {"after_seq": 1, "object": "status-day", "revision": "r1"},
+      {"after_seq": 2, "object": "status-day", "revision": "r2"}
+    ]
+  }
+}

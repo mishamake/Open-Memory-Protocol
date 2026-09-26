@@ -1,0 +1,32 @@
+{
+  "fixture": "consolidation",
+  "title": "A summary names every input revision, and keeps naming them after an input changes",
+  "about": "Two memories are consolidated into a summary. The summary's lineage names the specific input revisions. When one input is later corrected, the summary still names the revision it was made from, so a reader can tell the summary is now built on an older input.",
+  "drafts": {
+    "cognee": "§3.4 a derivation references the input revisions themselves; consolidation must name all inputs",
+    "ibm": "source material: linkage to the information used to create the memory",
+    "contextnest": "§3.2 derived_from records lineage separately from reference links; pinned URIs (id@N) name a revision"
+  },
+  "requires": ["supersede", "consolidate"],
+  "events": [
+    {"seq": 1, "op": "assert", "object": "channel", "revision": "c1",
+     "body": "Sruly prefers email for anything longer than a paragraph.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["transcript:t3#1"]},
+    {"seq": 2, "op": "assert", "object": "hours", "revision": "h1",
+     "body": "Sruly is reachable 9:00 to 17:00 US Eastern.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["transcript:t3#6"]},
+    {"seq": 3, "op": "consolidate", "object": "contact-summary", "revision": "s1",
+     "inputs": ["c1", "h1"],
+     "body": "Contact Sruly by email during US Eastern working hours.",
+     "actor": "reviewer@example.org", "agent": "summarizer", "model": "any-model",
+     "role": "machine_derived"},
+    {"seq": 4, "op": "supersede", "object": "channel", "revision": "c2", "replaces": "c1",
+     "body": "Sruly prefers chat for anything short, email for anything long.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["transcript:t4#2"]}
+  ],
+  "expect": {
+    "current": {"channel": "c2", "hours": "h1", "contact-summary": "s1"},
+    "history": {"channel": ["c1", "c2"], "hours": ["h1"], "contact-summary": ["s1"]},
+    "lineage": {"s1": ["c1", "h1"]}
+  }
+}

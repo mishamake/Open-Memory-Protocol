@@ -1,0 +1,26 @@
+{
+  "fixture": "invalidation",
+  "title": "An invalidated memory leaves current reads and stays out when an old archive comes back",
+  "about": "A memory is invalidated. Current reads no longer return it; its history is kept and a historical read before the invalidation still returns it. An archive taken before the invalidation is then imported into the same system. The memory must not become current again.",
+  "drafts": {
+    "cognee": "§3.5 current reads exclude invalidated claims; historical reads are explicit; §3.6 imports are explicit about what they keep",
+    "ibm": "Invalidate: invalidation timestamp, the record is kept; import makes a new memory in the receiving system",
+    "contextnest": "Appendix A.1 rejected is a terminal hide and implementations MUST refuse to publish a rejected document, to prevent silent resurrection"
+  },
+  "requires": ["invalidate", "archive"],
+  "events": [
+    {"seq": 1, "op": "assert", "object": "office", "revision": "o1",
+     "body": "The team meets in room 4B on Mondays.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["email:2026-09-01"]},
+    {"seq": 2, "op": "archive", "label": "before-invalidation"},
+    {"seq": 3, "op": "invalidate", "object": "office", "actor": "sruly@example.org",
+     "reason": "the team no longer meets in person"},
+    {"seq": 4, "op": "reimport", "label": "before-invalidation"}
+  ],
+  "expect": {
+    "current": {"office": null},
+    "history": {"office": ["o1"]},
+    "as_of": [{"after_seq": 1, "object": "office", "revision": "o1"}],
+    "reimport": {"before-invalidation": {"not_current": ["o1"]}}
+  }
+}

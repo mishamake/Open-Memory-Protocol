@@ -1,0 +1,37 @@
+{
+  "fixture": "pinned-read",
+  "title": "Reads pinned to a past point see one consistent state of every memory",
+  "about": "One memory is revised twice while a second memory is added between the revisions. A read pinned after step N returns, for every memory, the revision that was current after step N, and nothing for a memory that did not exist yet.",
+  "drafts": {
+    "cognee": "§3.5 historical reads are explicit and distinct from current reads",
+    "ibm": "Recall takes an optional timestamp (default now) for temporal resolution",
+    "contextnest": "§5.1 the past is addressed by checkpoint; a pinned read gives every document from the same moment"
+  },
+  "requires": ["supersede", "as_of"],
+  "events": [
+    {"seq": 1, "op": "assert", "object": "deadline", "revision": "d1",
+     "body": "First OMP drafts are due 2026-09-30.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["email:a"]},
+    {"seq": 2, "op": "assert", "object": "venue", "revision": "v1",
+     "body": "Drafts are submitted as pull requests to the OMP repository.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["email:b"]},
+    {"seq": 3, "op": "supersede", "object": "deadline", "revision": "d2", "replaces": "d1",
+     "body": "First OMP drafts are due 2026-10-02.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["email:c"]},
+    {"seq": 4, "op": "supersede", "object": "deadline", "revision": "d3", "replaces": "d2",
+     "body": "First OMP drafts are due 2026-10-09.",
+     "actor": "sruly@example.org", "role": "human_assertion", "evidence": ["email:d"]}
+  ],
+  "expect": {
+    "current": {"deadline": "d3", "venue": "v1"},
+    "history": {"deadline": ["d1", "d2", "d3"], "venue": ["v1"]},
+    "as_of": [
+      {"after_seq": 1, "object": "deadline", "revision": "d1"},
+      {"after_seq": 1, "object": "venue", "revision": null},
+      {"after_seq": 2, "object": "deadline", "revision": "d1"},
+      {"after_seq": 2, "object": "venue", "revision": "v1"},
+      {"after_seq": 3, "object": "deadline", "revision": "d2"},
+      {"after_seq": 4, "object": "deadline", "revision": "d3"}
+    ]
+  }
+}

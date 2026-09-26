@@ -21,15 +21,21 @@ nest-agent --nest team ...             # a hosted nest registered as an alias:
 | §4.2 selectors and packs | `load="pack:core"` (or any selector) is loaded in full before each model call; `nest_query(selector)` lets the model load more |
 | §5 / A.1 `status` | only `published` documents are served; `nest_propose` writes `pending_review`, which the resolver will not serve until a person publishes it |
 | §5 checkpoints, CN §9.2 tracing | `middleware.reads` records selector, resolved ids, and checkpoint for every set the agent saw; `ctx` also logs each access itself |
-| §6.3 forget | not here: it is proposed, not implemented in `ctx` yet |
+| §6.3 forget | not here: it is proposed, not implemented in `ctx` yet; `fixtures/resurrection.json` states the expected behaviour |
+
+The prototype also carries **cross-draft mappings** (IBM records, the Packer directory, the
+Cognee six-part core, AIDP's FMP shapes) and **shared lifecycle fixtures** that run on two
+independent engines. See [Cross-draft mappings](#cross-draft-mappings) and
+[Shared fixtures](#shared-fixtures).
 
 ## Install
 
-Needs Node 20+ for `ctx`, and Python 3.10+.
+Needs Node 20+ for `ctx`, and Python 3.11+.
 
 ```bash
 npm install -g @promptowl/contextnest-cli
-uv sync --extra dev
+uv sync --extra dev                    # the adapter
+uv sync --extra dev --extra mappings   # plus the mappings (installs the sibling prototypes)
 ```
 
 ## CLI
@@ -55,8 +61,9 @@ uv run nest-agent --nest /tmp/demo-nest ask --load pack:core --writable \
 
 ```bash
 uv run pytest            # needs ctx on PATH; tests skip without it
-# or, with nothing installed locally:
-docker build -t nest-adapter . && docker run --rm nest-adapter
+# or, with nothing installed locally (build from prototypes/, the mappings import siblings):
+cd .. && docker build -f contextnest-draft-adapter/Dockerfile -t nest-adapter . \
+  && docker run --rm nest-adapter
 ```
 
 The tests seed a real nest with `ctx` and drive the middleware with a fake model:
@@ -66,13 +73,23 @@ published mid-conversation, the "loaded in full" labelling, and the read trace. 
 hosted nest through a `ctx vault` alias (no code change); that run is not part of the
 offline suite.
 
+The mapping tests (`tests/test_mappings_*.py`, `tests/test_fixtures.py`) cover CN to IBM
+to CN (versions, authors, agent and model, bodies, tags, rejected status, lineage, `ctx
+verify` on the receiving nest, and a second export matching the first), a retry writing
+nothing new, the IBM prototype's own records (including its Packer bridge output) running on
+a nest and coming back to an IBM store, CN to Packer (validated, and read back by the IBM
+prototype's bridge), Packer to CN to Packer, the Cognee table, view, manifest and receipt,
+the FMP shapes (validated against `fmp.schema`), and the five shared fixtures on both
+engines. They skip without `ctx` or without the sibling prototypes installed.
+
 ## Live runs
 
 `live/run_live.py` runs four scenarios on real models, on a fresh nest each time, and
 writes every tool call, tool result, answer and read to `live/results/`:
 
 ```bash
-docker run --rm --env-file ../.env -v "$PWD/live:/app/live" nest-adapter \
+docker run --rm --env-file ../.env \
+  -v "$PWD/live:/prototypes/contextnest-draft-adapter/live" nest-adapter \
   python live/run_live.py            # Nemotron 3 Nano and Kimi K3 via OpenRouter
 ```
 
@@ -120,11 +137,89 @@ on OpenRouter asks for 131,072 output tokens, so the script caps it at 2,000.
   says nothing about budgets.
 - **Where proposals go.** `nest_propose` writes to `nodes/memory/<slug-of-title>`. The draft
   does not reserve a folder for agent-written memory.
+- **How a proposal is written.** `ctx add` publishes version 1 as it creates a node, so a
+  proposal made with `add` and then set to `pending_review` was briefly served and sealed
+  into a checkpoint. For a local nest `nest_propose` now writes the `pending_review` file
+  and indexes it; version 1 is cut when a person publishes. A hosted nest still uses
+  `add` then `update`.
 - **Changes during a session.** The draft says what is served, not how a harness learns
   that the served set changed mid-conversation. Here only the agent's own proposals are
   announced; changes made by others show up in the preload or the next query.
 - **Hosted checkpoints.** `ctx` reports the checkpoint for local nests only, so
   `reads[].checkpoint` is `None` against a hosted nest.
+
+## Cross-draft mappings
+
+[`mappings/`](mappings/) converts between a Context Nest and the shapes the other drafts
+propose, in both directions where the other side has somewhere to put the data.
+[`mappings/MAPPING.md`](mappings/MAPPING.md) has the full field tables. Every module lists
+what does not map in an `UNMAPPABLE` dict, because the Cognee draft asks for that.
+
+| Module | Other draft | What it does |
+|---|---|---|
+| `ibm.py` | IBM v0.1 (Gabe Goodhart and IBM) | node versions to an IBM override chain and back, with the IBM prototype's own `MemoryRecord` and `ExportBundle`; the export loads into the IBM `MemoryStore` unchanged |
+| `packer.py` | Packer v0.2 (Charles Packer, Letta) | a nest to a Packer memory directory (`pack:core` becomes the root tier, the rest is deferred, every directory gets a `MEMORY.md`) and back; checked with the python-loader-validator |
+| `cognee.py` | Cognee v0.1 (Vasilije Markovic and the Cognee team) | the six-part core as a declarative table, a per-node six-part view, and a manifest plus receipt; no cognee or COGX dependency |
+| `aidp.py` | AIDP v0.1 (Sruly Rosenblat) | nodes to FMP `files` and `inferences`, `upload_inference` as a review-gated write, and a table of which `/fmp` endpoints a CN server could expose |
+| `exchange.py` | Cognee §3.6 | `Manifest` and `Receipt` (accepted, transformed, omitted, unresolved, rejected, with reasons and identity mappings) |
+
+The mappings do not reimplement Context Nest. A node is written as a Markdown file and
+sealed with `ctx publish`; an old revision comes from `ctx reconstruct`; a point in time is
+a checkpoint from `ctx checkpoint list`. Version numbers, hashes, checkpoints and status
+transitions all come from `ctx`. The Python only moves fields between shapes.
+
+What maps well:
+
+- **Immutability.** IBM's "no update, override and invalidate" and Context Nest's
+  append-only history are the same idea. One node with N published versions is one IBM
+  chain of N records; each record's id is the version's pinned URI (`id@checkpoint`).
+- **Two tiers.** Packer's root and deferred tiers are one selector: whatever `pack:core`
+  serves is loaded at the root. A Packer directory imported into a nest and exported again
+  comes back file for file.
+- **Lineage.** `derived_from` with pinned URIs names the input revisions themselves, which
+  is what Cognee §3.4 asks of a consolidation.
+
+What does not map (the short list; MAPPING.md has all of it):
+
+- **Scope and ACLs.** Context Nest leaves read permission out. IBM scope tags survive a
+  round trip in `metadata.omp.ibm` but ctx does not enforce them.
+- **Approval state.** IBM, Packer and FMP have no draft or review state, so only published
+  versions leave a nest; the receipt lists what was left out.
+- **Hashes.** None of the other shapes carries them. A mapped import gets new hashes from
+  ctx; only a directory copy keeps the original chain for `ctx verify`.
+- **Transcripts.** FMP and Cognee have them; Context Nest has no transcript type.
+- **Rejection time.** `published -> rejected` cuts no version, so its instant is not in
+  history.
+
+```python
+from mappings import NestIO, ibm, packer, cognee
+
+nest = NestIO("/tmp/demo-nest")
+bundle, manifest, receipt = ibm.export_bundle(nest)          # IBM ExportBundle
+ibm.import_bundle(NestIO.init("/tmp/copy", "copy"), bundle)  # back into a fresh nest
+packer.export_packer(nest, "/tmp/packer-memory")             # validated Packer directory
+manifest, receipt = cognee.export_manifest(nest, "#core")    # Cognee-style manifest
+```
+
+## Shared fixtures
+
+[`fixtures/`](fixtures/) holds five engine-neutral lifecycle cases in JSON: correction,
+consolidation, invalidation, a pinned (as-of) read, and a resurrection attempt where an old
+export tries to bring back a forgotten revision.
+[`fixtures/README.md`](fixtures/README.md) describes the format.
+
+`tests/test_fixtures.py` runs each one on two engines that share no code: the IBM
+prototype's `MemoryStore`, and a real nest through `ctx`, with archives crossing between
+them as IBM bundles. Expected outcomes:
+
+- correction, consolidation, pinned read: both engines pass.
+- invalidation: ctx recognises the archive's revisions by identity and writes nothing, and
+  refuses a direct republish of a rejected node. The IBM prototype is marked as an expected
+  failure: in the IBM draft an import becomes a new memory, so the archived copy is current
+  again. That is a design choice of the draft, and it is the case Cognee §3.5 raises.
+- resurrection: skipped on ctx until `ctx forget` ships (CN §6.3 is being built), with the
+  expected behaviour written down; skipped on the IBM prototype, whose draft has no
+  tombstone.
 
 ## License
 

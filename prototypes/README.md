@@ -20,7 +20,9 @@ Initiative.
 - [`contextnest-draft-adapter/`](contextnest-draft-adapter/) — Context Nest draft v0.1:
   middleware that plugs an agent into a nest (local directory or hosted) through `ctx`, the
   draft's reference implementation. Pack preloading, selector queries, published-only
-  serving, propose-for-review writes, and a per-read trace.
+  serving, propose-for-review writes, and a per-read trace. Also cross-draft mappings (IBM
+  records, Packer directory, Cognee six-part core, FMP shapes) and shared lifecycle fixtures
+  run on both `ctx` and the IBM prototype.
 
 ## Configuration
 

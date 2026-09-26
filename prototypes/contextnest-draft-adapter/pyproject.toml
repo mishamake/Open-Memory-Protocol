@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "LangChain create_agent middleware that plugs an agent into a Context Nest (local or hosted) through the ctx reference implementation, for the Context Nest proposal v0.1"
 readme = "README.md"
 license = { text = "Apache-2.0" }
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
     { name = "Open Memory Protocol Initiative", email = "ompi@aidisclosures.org" },
 ]
@@ -16,6 +16,14 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7", "ruff>=0.5"]
+# Cross-draft mappings (mappings/). All sibling prototypes in this repo; PyYAML is already
+# installed with langchain-core and is named here because the mappings import it.
+mappings = [
+    "ibm-draft-memory-records",
+    "open-memory-protocol",
+    "aidp-draft-fmp",
+    "pyyaml>=6",
+]
 
 [project.scripts]
 nest-agent = "contextnest_adapter.cli:main"
@@ -24,12 +32,17 @@ nest-agent = "contextnest_adapter.cli:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.uv.sources]
+ibm-draft-memory-records = { path = "../ibm-draft-memory-records", editable = true }
+open-memory-protocol = { path = "../python-loader-validator", editable = true }
+aidp-draft-fmp = { path = "../aidp-draft-fmp", editable = true }
+
 [tool.hatch.build.targets.wheel]
-packages = ["contextnest_adapter"]
+packages = ["contextnest_adapter", "mappings"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py311"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
