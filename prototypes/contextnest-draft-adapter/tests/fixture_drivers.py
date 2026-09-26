@@ -191,7 +191,7 @@ class CNDriver:
                 raise Unsupported(self.missing["forget"])
             # Expected invocation once released (CN §6.3.1: node plus a closed reason code).
             self.nest.ctx.run(
-                "forget", self.node(ev["object"]), "--reason", ev["reason_code"], "--yes"
+                "forget", self.node(ev["object"]), "--reason", ev["reason_code"]
             )
         else:
             raise ValueError(op)

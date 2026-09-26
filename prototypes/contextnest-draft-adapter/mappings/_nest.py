@@ -336,8 +336,10 @@ class NestIO:
 
     def has_command(self, name: str) -> bool:
         """Whether this `ctx` build has a subcommand (used to gate `forget`)."""
+        # Older ctx builds print the top-level help for an unknown subcommand,
+        # so look for the command in the command list instead of trusting --help.
         try:
-            self.ctx.run(name, "--help")
-            return True
+            listing = self.ctx.run("--help")
         except CtxError:
             return False
+        return any(line.split()[:1] == [name] for line in listing.splitlines())

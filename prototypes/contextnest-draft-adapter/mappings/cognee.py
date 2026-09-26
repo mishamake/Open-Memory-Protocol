@@ -51,7 +51,8 @@ SEMANTIC_CORE: list[dict[str, str]] = [
      "carrier": "derived_from entries that no longer resolve", "status": "partial",
      "note": "Detectable (the URI does not resolve); not flagged in the node."},
     {"part": "evidence", "requirement": "text baseline; typed media descriptors",
-     "carrier": "Markdown body; type:pdf with a sidecar", "status": "partial", "note": ""},
+     "carrier": "Markdown body; type:pdf with a sidecar", "status": "partial",
+     "note": "text is the baseline; PDF is the only typed non-text medium, and there is no general media-type descriptor with its own integrity field"},
     # 3.3 scope, ownership and authority
     {"part": "scope", "requirement": "subject, owner, author/agent, origin system, context",
      "carrier": "edited_by, client.agent, author (optional key)", "status": "partial",
@@ -99,7 +100,8 @@ SEMANTIC_CORE: list[dict[str, str]] = [
      "status": "partial", "note": "The nest directory is its own export (CN §6.2); the "
      "manifest is added by the mapping, not by ctx."},
     {"part": "exchange", "requirement": "object-level receipt", "carrier":
-     "exchange.Receipt (these mappings)", "status": "partial", "note": ""},
+     "exchange.Receipt (these mappings)", "status": "partial",
+     "note": "the receipt lives in this adapter, not in ctx; retry boundaries and identity mappings are not persisted"},
     {"part": "exchange", "requirement": "verify after transfer", "carrier": "ctx verify on "
      "the receiving nest", "status": "carried", "note": "Directory copy only; a mapped "
      "import gets fresh hashes."},
